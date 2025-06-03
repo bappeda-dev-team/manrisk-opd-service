@@ -24,12 +24,26 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/manajemen_risiko
       DB_USERNAME: majapahit
       DB_PASSWORD: Madiun@123
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_FLYWAY_ENABLED: true
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: true
     ports:
       - "8080:8080"
     depends_on:
       - postgres
     networks:
       - manajemen-risiko-network
+    restart: unless-stopped
+    command: >
+      sh -c "
+        echo 'Waiting for PostgreSQL to be ready...'
+        while ! nc -z postgres 5432; do
+          echo 'PostgreSQL is not ready yet, waiting...'
+          sleep 2
+        done
+        echo 'PostgreSQL is ready!'
+        exec java -jar app.jar
+      "
 
 volumes:
   postgres_data:

@@ -14,7 +14,11 @@ public class FlywayConfig {
     public FlywayMigrationStrategy cleanMigrateStrategy() {
         return flyway -> {
             // In development, you can clean and migrate
+            // Uncomment the next line if you want to clean database on startup
             // flyway.clean();
+            
+            // Repair if needed (useful in development)
+            flyway.repair();
             flyway.migrate();
         };
     }
@@ -22,6 +26,19 @@ public class FlywayConfig {
     @Bean
     @Profile({"staging", "production"})
     public FlywayMigrationStrategy migrateStrategy() {
-        return Flyway::migrate;
+        return flyway -> {
+            // In production, only migrate (never clean)
+            flyway.migrate();
+        };
+    }
+    
+    @Bean
+    @Profile("docker")
+    public FlywayMigrationStrategy dockerMigrateStrategy() {
+        return flyway -> {
+            // For Docker environments
+            flyway.repair();
+            flyway.migrate();
+        };
     }
 }
