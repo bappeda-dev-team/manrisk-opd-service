@@ -82,9 +82,9 @@ public class Rekin {
     @Column(name = "status_manrisk", length = 100)
     private String statusManrisk = "MenungguVerifikasiAtasan";
 
-    @NotNull(message = "Version wajib diisi!")
+    @Version
     @Column(name = "version")
-    private Integer version;
+    private Integer version = 0;
 
     @CreatedDate
     @Column(name = "created_date", updatable = false)
