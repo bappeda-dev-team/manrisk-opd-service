@@ -65,24 +65,7 @@ public class RekinController {
     @PostMapping("/manrisk")
     @Operation(summary = "Buat data Rekin baru")
     public ResponseEntity<ApiResponse<Rekin>> createData(@Valid @RequestBody Rekin rekinRequest) {
-        Rekin rekin = new Rekin(
-                rekinRequest.getIdRekin(),
-                rekinRequest.getNipAsn(),
-                rekinRequest.getKodeOpd(),
-                rekinRequest.getTahun(),
-                rekinRequest.getPenyebabPermasalahan(),
-                rekinRequest.getPermasalahan(),
-                rekinRequest.getPernyataanRisiko(),
-                rekinRequest.getSkalaKemungkinan(),
-                rekinRequest.getDampak(),
-                rekinRequest.getSkalaDampak(),
-                rekinRequest.getPihakYangTerkena(),
-                rekinRequest.getKeterangan(),
-                rekinRequest.getStatus() != null ? rekinRequest.getStatus() : "UNCHECKED",
-                rekinRequest.getStatusManrisk() != null ? rekinRequest.getStatusManrisk() : "MenungguVerifikasiAtasan",
-                rekinRequest.getVersion()     // updatedDate
-        );
-        rekinService.save(rekin);
+        Rekin rekin = rekinService.save(rekinRequest);
 
         ApiResponse<Rekin> response = ApiResponse.success(rekin,
                 "Created data successfully");

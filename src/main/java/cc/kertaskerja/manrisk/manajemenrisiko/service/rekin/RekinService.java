@@ -14,7 +14,7 @@ public interface RekinService {
 
     List<Rekin> findByNip(String kodeOpd, String tahun, String nip);
 
-    void save(Rekin rekin);
+    Rekin save(Rekin rekin);
 
     Rekin update(String kodeOpd, String tahun, String nip, String idRekin, Rekin rekinRequest);
 }

@@ -49,8 +49,15 @@ public class RekinServiceImpl implements RekinService {
 
     @Override
     @Transactional
-    public void save(Rekin rekin) {
-        rekinRepository.save(rekin);
+    public Rekin save(Rekin rekin) {
+        if (rekin.getStatus() == null) {
+            rekin.setStatus("UNCHECKED");
+        }
+        if (rekin.getStatusManrisk() == null) {
+            rekin.setStatusManrisk("MenungguVerifikasiAtasan");
+        }
+
+        return rekinRepository.save(rekin);
     }
 
     @Override
