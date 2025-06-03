@@ -1,3 +1,6 @@
+IF OBJECT_ID('rekin', 'U') IS NOT NULL
+DROP TABLE rekin;
+
 CREATE TABLE rekin (
     id SERIAL PRIMARY KEY,
     id_rekin VARCHAR(50) NOT NULL,

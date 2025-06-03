@@ -8,12 +8,20 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none # Changed to 'none' temporarily
     show-sql: true
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    out-of-order: false
+    locations: classpath:db/migration
+    baseline-version: 0
+    baseline-description: "Initial baseline"
   validation:
     enabled: true
   main:
@@ -39,6 +47,7 @@ logging:
       springdoc: DEBUG
       springframework:
         web: DEBUG
+      flywaydb: INFO
     io:
       swagger: DEBUG
     com:

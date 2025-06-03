@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.flywaydb.flyway' version '9.22.3'
 }
 
 group = 'cc.kertaskerja.manrisk'
@@ -21,6 +22,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
     implementation 'io.github.cdimascio:dotenv-java:3.0.0'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-database-postgresql'
     compileOnly("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
 
@@ -38,4 +41,13 @@ tasks.named('test') {
 
 jar {
     enabled = false
+}
+
+flyway {
+    url = project.findProperty('DB_URL') ?: 'jdbc:postgresql://localhost:5432/manajemen_risiko'
+    user = project.findProperty('DB_USERNAME') ?: 'majapahit'
+    password = project.findProperty('DB_PASSWORD') ?: 'Madiun@123'
+    locations = ['classpath:db/migration']
+    baselineOnMigrate = true
+    validateOnMigrate = true
 }
