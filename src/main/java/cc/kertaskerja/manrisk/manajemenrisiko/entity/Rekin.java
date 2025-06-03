@@ -5,14 +5,22 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 
 @Entity
 @Table(name = "rekin")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+@Builder
 public class Rekin extends BaseAuditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Long id;
 
     @NotNull(message = "ID Rekin wajib diisi!")
@@ -71,185 +79,15 @@ public class Rekin extends BaseAuditable {
 
     @Size(max = 50, message = "Status tidak boleh lebih dari 50 karakter!")
     @Column(name = "status", length = 50)
+    @Builder.Default
     private String status = "UNCHECKED";
 
     @Size(max = 100, message = "Status manrisk tidak boleh lebih dari 100 karakter!")
     @Column(name = "status_manrisk", length = 100)
+    @Builder.Default
     private String statusManrisk = "MenungguVerifikasiAtasan";
 
     @NotNull(message = "Version wajib diisi!")
     @Column(name = "version")
     private Integer version;
-
-    public Rekin() {}
-
-    public Rekin(String idRekin, String nipAsn, String kodeOpd, String tahun, String penyebabPermasalahan, String permasalahan, String pernyataanRisiko, String skalaKemungkinan, String dampak, String skalaDampak, String pihakYangTerkena, String keterangan, String status, String statusManrisk, Integer version) {
-        this.idRekin = idRekin;
-        this.nipAsn = nipAsn;
-        this.kodeOpd = kodeOpd;
-        this.tahun = tahun;
-        this.penyebabPermasalahan = penyebabPermasalahan;
-        this.permasalahan = permasalahan;
-        this.pernyataanRisiko = pernyataanRisiko;
-        this.skalaKemungkinan = skalaKemungkinan;
-        this.dampak = dampak;
-        this.skalaDampak = skalaDampak;
-        this.pihakYangTerkena = pihakYangTerkena;
-        this.keterangan = keterangan;
-        this.status = status;
-        this.statusManrisk = statusManrisk;
-        this.version = version;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getIdRekin() {
-        return idRekin;
-    }
-
-    public void setIdRekin(String idRekin) {
-        this.idRekin = idRekin;
-    }
-
-    public String getNipAsn() {
-        return nipAsn;
-    }
-
-    public void setNipAsn(String nipAsn) {
-        this.nipAsn = nipAsn;
-    }
-
-    public String getKodeOpd() {
-        return kodeOpd;
-    }
-
-    public void setKodeOpd(String kodeOpd) {
-        this.kodeOpd = kodeOpd;
-    }
-
-    public String getTahun() {
-        return tahun;
-    }
-
-    public void setTahun(String tahun) {
-        this.tahun = tahun;
-    }
-
-    public String getPenyebabPermasalahan() {
-        return penyebabPermasalahan;
-    }
-
-    public void setPenyebabPermasalahan(String penyebabPermasalahan) {
-        this.penyebabPermasalahan = penyebabPermasalahan;
-    }
-
-    public String getPermasalahan() {
-        return permasalahan;
-    }
-
-    public void setPermasalahan(String permasalahan) {
-        this.permasalahan = permasalahan;
-    }
-
-    public String getPernyataanRisiko() {
-        return pernyataanRisiko;
-    }
-
-    public void setPernyataanRisiko(String pernyataanRisiko) {
-        this.pernyataanRisiko = pernyataanRisiko;
-    }
-
-    public String getSkalaKemungkinan() {
-        return skalaKemungkinan;
-    }
-
-    public void setSkalaKemungkinan(String skalaKemungkinan) {
-        this.skalaKemungkinan = skalaKemungkinan;
-    }
-
-    public String getDampak() {
-        return dampak;
-    }
-
-    public void setDampak(String dampak) {
-        this.dampak = dampak;
-    }
-
-    public String getSkalaDampak() {
-        return skalaDampak;
-    }
-
-    public void setSkalaDampak(String skalaDampak) {
-        this.skalaDampak = skalaDampak;
-    }
-
-    public String getPihakYangTerkena() {
-        return pihakYangTerkena;
-    }
-
-    public void setPihakYangTerkena(String pihakYangTerkena) {
-        this.pihakYangTerkena = pihakYangTerkena;
-    }
-
-    public String getKeterangan() {
-        return keterangan;
-    }
-
-    public void setKeterangan(String keterangan) {
-        this.keterangan = keterangan;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getStatusManrisk() {
-        return statusManrisk;
-    }
-
-    public void setStatusManrisk(String statusManrisk) {
-        this.statusManrisk = statusManrisk;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    @Override
-    public String toString() {
-        return "Rekin{" +
-                "id=" + id +
-                ", idRekin='" + idRekin + '\'' +
-                ", nipAsn='" + nipAsn + '\'' +
-                ", kodeOpd='" + kodeOpd + '\'' +
-                ", tahun='" + tahun + '\'' +
-                ", penyebabPermasalahan='" + penyebabPermasalahan + '\'' +
-                ", permasalahan='" + permasalahan + '\'' +
-                ", pernyataanRisiko='" + pernyataanRisiko + '\'' +
-                ", skalaKemungkinan='" + skalaKemungkinan + '\'' +
-                ", dampak='" + dampak + '\'' +
-                ", skalaDampak='" + skalaDampak + '\'' +
-                ", pihakYangTerkena='" + pihakYangTerkena + '\'' +
-                ", keterangan='" + keterangan + '\'' +
-                ", status='" + status + '\'' +
-                ", statusManrisk='" + statusManrisk + '\'' +
-                ", version=" + version +
-                ", createdDate=" + getCreatedDate() +
-                ", updatedDate=" + getUpdatedDate() +
-                '}';
-    }
 }

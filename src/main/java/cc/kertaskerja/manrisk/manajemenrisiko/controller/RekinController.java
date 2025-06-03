@@ -6,24 +6,21 @@ import cc.kertaskerja.manrisk.manajemenrisiko.service.rekin.RekinService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "*")
 @Tag(name = "Rekin", description = "API Rekin untuk manajemen risiko")
+@RequiredArgsConstructor
 public class RekinController {
 
     private final RekinService rekinService;
-
-    public RekinController(RekinService rekinService) {
-        this.rekinService = rekinService;
-    }
 
     @GetMapping("/manrisk/{kodeOpd}/{tahun}")
     @Operation(summary = "Ambil semua data Rekin berdasarkan Kode OPD dan Tahun")
@@ -86,5 +83,4 @@ public class RekinController {
 
         return ResponseEntity.ok(response);
     }
-
 }
