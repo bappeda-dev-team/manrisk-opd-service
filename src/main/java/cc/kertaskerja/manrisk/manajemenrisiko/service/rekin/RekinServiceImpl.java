@@ -52,4 +52,62 @@ public class RekinServiceImpl implements RekinService {
     public void save(Rekin rekin) {
         rekinRepository.save(rekin);
     }
+
+    @Override
+    @Transactional
+    public Rekin update(String kodeOpd, String tahun, String nip, String idRekin, Rekin rekinRequest) {
+        Optional<Rekin> existingRekinOpt = rekinRepository.findRekinForUpdate(kodeOpd, tahun, nip, idRekin);
+
+        if (existingRekinOpt.isEmpty()) {
+            throw new ResourceNotFoundException("Rekin with ID " + idRekin + " not found for NIP " + nip);
+        }
+
+        Rekin existingRekin = existingRekinOpt.get();
+
+        if (rekinRequest.getPenyebabPermasalahan() != null) {
+            existingRekin.setPenyebabPermasalahan(rekinRequest.getPenyebabPermasalahan());
+        }
+        if (rekinRequest.getPermasalahan() != null) {
+            existingRekin.setPermasalahan(rekinRequest.getPermasalahan());
+        }
+        if (rekinRequest.getPernyataanRisiko() != null) {
+            existingRekin.setPernyataanRisiko(rekinRequest.getPernyataanRisiko());
+        }
+        if (rekinRequest.getSkalaKemungkinan() != null) {
+            existingRekin.setSkalaKemungkinan(rekinRequest.getSkalaKemungkinan());
+        }
+        if (rekinRequest.getDampak() != null) {
+            existingRekin.setDampak(rekinRequest.getDampak());
+        }
+        if (rekinRequest.getSkalaDampak() != null) {
+            existingRekin.setSkalaDampak(rekinRequest.getSkalaDampak());
+        }
+        if (rekinRequest.getPihakYangTerkena() != null) {
+            existingRekin.setPihakYangTerkena(rekinRequest.getPihakYangTerkena());
+        }
+        if (rekinRequest.getKeterangan() != null) {
+            existingRekin.setKeterangan(rekinRequest.getKeterangan());
+        }
+        if (rekinRequest.getVersion() != null) {
+            existingRekin.setVersion(rekinRequest.getVersion());
+        }
+        if (rekinRequest.getNipAsn() != null) {
+            existingRekin.setNipAsn(rekinRequest.getNipAsn());
+        }
+        if (rekinRequest.getKodeOpd() != null) {
+            existingRekin.setKodeOpd(rekinRequest.getKodeOpd());
+        }
+        if (rekinRequest.getTahun() != null) {
+            existingRekin.setTahun(rekinRequest.getTahun());
+        }
+        if (rekinRequest.getIdRekin() != null) {
+            existingRekin.setIdRekin(rekinRequest.getIdRekin());
+        }
+
+        // Reset status as per SPEC requirement
+        existingRekin.setStatus("UNCHECKED");
+        existingRekin.setStatusManrisk("MenungguVerifikasiAtasan");
+
+        return rekinRepository.save(existingRekin);
+    }
 }

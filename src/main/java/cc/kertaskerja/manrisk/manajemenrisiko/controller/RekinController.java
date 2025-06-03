@@ -80,9 +80,7 @@ public class RekinController {
                 rekinRequest.getKeterangan(),
                 rekinRequest.getStatus() != null ? rekinRequest.getStatus() : "UNCHECKED",
                 rekinRequest.getStatusManrisk() != null ? rekinRequest.getStatusManrisk() : "MenungguVerifikasiAtasan",
-                rekinRequest.getVersion(),
-                LocalDateTime.now(),     // createdDate
-                LocalDateTime.now()      // updatedDate
+                rekinRequest.getVersion()     // updatedDate
         );
         rekinService.save(rekin);
 
@@ -91,4 +89,19 @@ public class RekinController {
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+    @PutMapping("/manrisk/{kodeOpd}/{tahun}/{nip}/{idRekin}")
+    @Operation(summary = "Update data Rekin berdasarkan Kode OPD, Tahun, NIP, dan ID Rekin")
+    public ResponseEntity<ApiResponse<Rekin>> updateData(@PathVariable String kodeOpd,
+                                                         @PathVariable String tahun,
+                                                         @PathVariable String nip,
+                                                         @PathVariable String idRekin,
+                                                         @RequestBody Rekin rekinRequest) {
+        Rekin updatedRekin = rekinService.update(kodeOpd, tahun, nip, idRekin, rekinRequest);
+
+        ApiResponse<Rekin> response = ApiResponse.updated(updatedRekin);
+
+        return ResponseEntity.ok(response);
+    }
+
 }

@@ -1,19 +1,14 @@
 package cc.kertaskerja.manrisk.manajemenrisiko.entity;
 
+import cc.kertaskerja.manrisk.manajemenrisiko.common.BaseAuditable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "rekin")
-@EntityListeners(AuditingEntityListener.class)
-public class Rekin {
+public class Rekin extends BaseAuditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,17 +81,9 @@ public class Rekin {
     @Column(name = "version")
     private Integer version;
 
-    @CreatedDate
-    @Column(name = "created_date", updatable = false)
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate
-    @Column(name = "updated_date")
-    private LocalDateTime updatedDate;
-
     public Rekin() {}
 
-    public Rekin(String idRekin, String nipAsn, String kodeOpd, String tahun, String penyebabPermasalahan, String permasalahan, String pernyataanRisiko, String skalaKemungkinan, String dampak, String skalaDampak, String pihakYangTerkena, String keterangan, String status, String statusManrisk, Integer version, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    public Rekin(String idRekin, String nipAsn, String kodeOpd, String tahun, String penyebabPermasalahan, String permasalahan, String pernyataanRisiko, String skalaKemungkinan, String dampak, String skalaDampak, String pihakYangTerkena, String keterangan, String status, String statusManrisk, Integer version) {
         this.idRekin = idRekin;
         this.nipAsn = nipAsn;
         this.kodeOpd = kodeOpd;
@@ -112,8 +99,6 @@ public class Rekin {
         this.status = status;
         this.statusManrisk = statusManrisk;
         this.version = version;
-        this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
     }
 
     public Long getId() {
@@ -244,22 +229,6 @@ public class Rekin {
         this.version = version;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public LocalDateTime getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(LocalDateTime updatedDate) {
-        this.updatedDate = updatedDate;
-    }
-
     @Override
     public String toString() {
         return "Rekin{" +
@@ -279,8 +248,8 @@ public class Rekin {
                 ", status='" + status + '\'' +
                 ", statusManrisk='" + statusManrisk + '\'' +
                 ", version=" + version +
-                ", createdDate=" + createdDate +
-                ", updatedDate=" + updatedDate +
+                ", createdDate=" + getCreatedDate() +
+                ", updatedDate=" + getUpdatedDate() +
                 '}';
     }
 }
