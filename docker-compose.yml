@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: manajemen-risiko-db
+    environment:
+      POSTGRES_DB: manajemen_risiko
+      POSTGRES_USER: majapahit
+      POSTGRES_PASSWORD: Madiun@123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - manajemen-risiko-network
+
+  # Spring Boot Application
+  app:
+    build: .
+    container_name: manajemen-risiko-app
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/manajemen_risiko
+      DB_USERNAME: majapahit
+      DB_PASSWORD: Madiun@123
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - manajemen-risiko-network
+
+volumes:
+  postgres_data:
+
+networks:
+  manajemen-risiko-network:
+    driver: bridge
