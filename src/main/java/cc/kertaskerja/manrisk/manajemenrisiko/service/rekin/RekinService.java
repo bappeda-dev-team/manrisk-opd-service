@@ -17,4 +17,6 @@ public interface RekinService {
     Rekin save(Rekin rekin);
 
     Rekin update(String kodeOpd, String tahun, String nip, String idRekin, Rekin rekinRequest);
+
+    void deleteByIdRekin(String kodeOpd, String tahun, String idRekin);
 }

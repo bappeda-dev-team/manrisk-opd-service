@@ -117,4 +117,16 @@ public class RekinServiceImpl implements RekinService {
 
         return rekinRepository.save(existingRekin);
     }
+
+    @Override
+    @Transactional
+    public void deleteByIdRekin(String kodeOpd, String tahun, String idRekin) {
+        Optional<Rekin> rekinOpt = rekinRepository.findByIdRekin(kodeOpd, tahun, idRekin);
+
+        if (rekinOpt.isEmpty()) {
+            throw new ResourceNotFoundException("Rekin with ID " + idRekin + " not found");
+        }
+
+        rekinRepository.delete(rekinOpt.get());
+    }
 }

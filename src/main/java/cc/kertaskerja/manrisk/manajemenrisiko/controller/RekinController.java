@@ -83,4 +83,16 @@ public class RekinController {
 
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/manrisk/{kodeOpd}/{tahun}/{idRekin}")
+    @Operation(summary = "Hapus data Rekin berdasarkan Kode OPD, Tahun, dan ID Rekin")
+    public ResponseEntity<ApiResponse<Void>> deleteData(@PathVariable String kodeOpd,
+                                                        @PathVariable String tahun,
+                                                        @PathVariable String idRekin) {
+        rekinService.deleteByIdRekin(kodeOpd, tahun, idRekin);
+
+        ApiResponse<Void> response = ApiResponse.deleted();
+
+        return ResponseEntity.ok(response);
+    }
 }
