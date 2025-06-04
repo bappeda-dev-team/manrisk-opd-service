@@ -3,6 +3,7 @@ package cc.kertaskerja.manrisk.manajemenrisiko.controller;
 import cc.kertaskerja.manrisk.manajemenrisiko.dto.ApiResponse;
 import cc.kertaskerja.manrisk.manajemenrisiko.entity.SkalaDampak;
 import cc.kertaskerja.manrisk.manajemenrisiko.service.skaladampak.SkalaDampakService;
+import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -24,6 +25,7 @@ public class SkalaDampakController {
 
     @GetMapping
     @Operation(summary = "Ambil semua data Skala Dampak")
+    @Timed(value = "skala.dampak.get.all", description = "Time taken to return all skala dampak")
     public ResponseEntity<ApiResponse<List<SkalaDampak>>> getAllData() {
         List<SkalaDampak> skalaDampakList = skalaDampakService.findAll();
         ApiResponse<List<SkalaDampak>> response = ApiResponse.success(skalaDampakList,
@@ -34,6 +36,7 @@ public class SkalaDampakController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Ambil data Skala Dampak berdasarkan ID")
+    @Timed(value = "skala.dampak.get.by.id", description = "Time taken to return skala dampak by ID")
     public ResponseEntity<ApiResponse<SkalaDampak>> getDataById(@PathVariable Long id) {
         SkalaDampak skalaDampak = skalaDampakService.findById(id);
 
@@ -56,6 +59,7 @@ public class SkalaDampakController {
 
     @PostMapping
     @Operation(summary = "Buat data Skala Dampak baru")
+    @Timed(value = "skala.dampak.create", description = "Time taken to create new skala dampak")
     public ResponseEntity<ApiResponse<SkalaDampak>> createData(@Valid @RequestBody SkalaDampak skalaDampakRequest) {
         SkalaDampak skalaDampak = skalaDampakService.save(skalaDampakRequest);
 
