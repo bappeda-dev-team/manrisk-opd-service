@@ -43,6 +43,22 @@ jar {
     enabled = false
 }
 
+def loadEnvFile() {
+    def envFile = file('.env')
+    if (envFile.exists()) {
+        envFile.readLines().each { line ->
+            if (line && !line.startsWith('#') && line.contains('=')) {
+                def (key, value) = line.split('=', 2)
+                if (!project.hasProperty(key)) {
+                    project.ext[key] = value
+                }
+            }
+        }
+    }
+}
+
+loadEnvFile()
+
 flyway {
     url = project.findProperty('DB_URL') ?: 'jdbc:postgresql://localhost:5432/manajemen_risiko'
     user = project.findProperty('DB_USERNAME') ?: 'majapahit'
