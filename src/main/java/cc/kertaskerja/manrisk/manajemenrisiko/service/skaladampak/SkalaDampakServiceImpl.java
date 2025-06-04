@@ -3,6 +3,7 @@ package cc.kertaskerja.manrisk.manajemenrisiko.service.skaladampak;
 import cc.kertaskerja.manrisk.manajemenrisiko.entity.SkalaDampak;
 import cc.kertaskerja.manrisk.manajemenrisiko.exception.ResourceNotFoundException;
 import cc.kertaskerja.manrisk.manajemenrisiko.repository.SkalaDampakRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,14 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class SkalaDampakServiceImpl implements SkalaDampakService {
 
-    private SkalaDampakRepository skalaDampakRepository;
-
-    @Autowired
-    public SkalaDampakServiceImpl(SkalaDampakRepository theSkalaDampakRepository) {
-        skalaDampakRepository = theSkalaDampakRepository;
-    }
+    private final SkalaDampakRepository skalaDampakRepository;
 
     @Override
     public List<SkalaDampak> findAll() {
@@ -32,7 +29,7 @@ public class SkalaDampakServiceImpl implements SkalaDampakService {
         if (result.isPresent()) {
             return result.get();
         } else {
-            throw new ResourceNotFoundException("SkalaDampak with ID " + id + " not found");
+            throw new ResourceNotFoundException("Skala Dampak with ID " + id + " not found");
         }
     }
 
@@ -43,7 +40,7 @@ public class SkalaDampakServiceImpl implements SkalaDampakService {
         if (result.isPresent()) {
             return result.get();
         } else {
-            throw new ResourceNotFoundException("SkalaDampak with value " + skalaDampak + " not found");
+            throw new ResourceNotFoundException("Skala Dampak with value " + skalaDampak + " not found");
         }
     }
 
@@ -59,7 +56,7 @@ public class SkalaDampakServiceImpl implements SkalaDampakService {
         Optional<SkalaDampak> existingSkalaDampakOpt = skalaDampakRepository.findById(id);
 
         if (existingSkalaDampakOpt.isEmpty()) {
-            throw new ResourceNotFoundException("SkalaDampak with ID " + id + " not found");
+            throw new ResourceNotFoundException("Skala Dampak with ID " + id + " not found");
         }
 
         SkalaDampak existingSkalaDampak = existingSkalaDampakOpt.get();
@@ -80,7 +77,7 @@ public class SkalaDampakServiceImpl implements SkalaDampakService {
         Optional<SkalaDampak> skalaDampakOpt = skalaDampakRepository.findById(id);
 
         if (skalaDampakOpt.isEmpty()) {
-            throw new ResourceNotFoundException("SkalaDampak with ID " + id + " not found");
+            throw new ResourceNotFoundException("Skala Dampak with ID " + id + " not found");
         }
 
         skalaDampakRepository.delete(skalaDampakOpt.get());

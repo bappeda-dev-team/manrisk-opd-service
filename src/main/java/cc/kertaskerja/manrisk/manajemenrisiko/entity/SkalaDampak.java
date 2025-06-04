@@ -27,6 +27,7 @@ public class SkalaDampak extends BaseAuditable {
     @Column(name = "skala_dampak", nullable = false, length = 50)
     private String skalaDampak;
 
+    @NotNull(message = "Keterangan dampak wajib diisi!")
     @Column(name = "keterangan_dampak", columnDefinition = "TEXT")
     private String keteranganDampak;
 }

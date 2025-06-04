@@ -67,20 +67,4 @@ springdoc:
     tryItOutEnabled: true
     disable-swagger-default-url: true
   override-with-generic-response: false
-  show-actuator: true
-
-# Actuator and Prometheus Configuration
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,prometheus,metrics,loggers
-      base-path: /actuator
-  endpoint:
-    health:
-      show-details: always
-    prometheus:
-      enabled: true
-  metrics:
-    tags:
-      application: ${spring.application.name}
+  show-actuator: false
