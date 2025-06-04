@@ -27,6 +27,9 @@ spec:
           env:
             - name: BPL_JVM_THREAD_COUNT
               value: "50"
-            - name: SPRING_DATASOURCE_URL
+            - name: DB_URL
               value: jdbc:postgresql://kertaskerja-postgres:5432/manajemen_risiko
-
+            - name: DB_USERNAME
+              value: user
+            - name: DB_PASSWORD
+              value: password
