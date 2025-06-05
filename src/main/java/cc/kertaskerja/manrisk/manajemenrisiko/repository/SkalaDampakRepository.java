@@ -9,6 +9,4 @@ import java.util.Optional;
 
 public interface SkalaDampakRepository extends JpaRepository<SkalaDampak, Long> {
 
-    @Query("SELECT s FROM SkalaDampak s WHERE s.skalaDampak = :skalaDampak")
-    Optional<SkalaDampak> findBySkalaDampak(@Param("skalaDampak") String skalaDampak);
 }

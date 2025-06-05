@@ -10,8 +10,6 @@ public interface SkalaDampakService {
 
     SkalaDampakDTO findById(Long id);
 
-    SkalaDampakDTO findBySkalaDampak(String skalaDampak);
-
     SkalaDampakDTO save(SkalaDampak skalaDampak);
 
     SkalaDampakDTO update(Long id, SkalaDampak skalaDampak);

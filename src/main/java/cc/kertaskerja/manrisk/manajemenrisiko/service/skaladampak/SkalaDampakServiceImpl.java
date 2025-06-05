@@ -41,13 +41,6 @@ public class SkalaDampakServiceImpl implements SkalaDampakService {
     }
 
     @Override
-    public SkalaDampakDTO findBySkalaDampak(String skalaDampak) {
-        SkalaDampak result = skalaDampakRepository.findBySkalaDampak(skalaDampak)
-                .orElseThrow(() -> new ResourceNotFoundException("Skala Dampak with value " + skalaDampak + " not found"));
-        return toDTO(result);
-    }
-
-    @Override
     @Transactional
     public SkalaDampakDTO save(SkalaDampak skalaDampak) {
         SkalaDampak saved = skalaDampakRepository.save(skalaDampak);

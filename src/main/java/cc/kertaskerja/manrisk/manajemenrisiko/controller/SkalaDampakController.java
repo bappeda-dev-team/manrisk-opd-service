@@ -44,17 +44,6 @@ public class SkalaDampakController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/by-skala/{skalaDampak}")
-    @Operation(summary = "Ambil data Skala Dampak berdasarkan nilai skala dampak")
-    public ResponseEntity<ApiResponse<SkalaDampakDTO>> getDataBySkalaDampak(@PathVariable String skalaDampak) {
-        SkalaDampakDTO result = skalaDampakService.findBySkalaDampak(skalaDampak);
-
-        ApiResponse<SkalaDampakDTO> response = ApiResponse.success(result,
-                "Retrieved Skala Dampak with value " + skalaDampak + " successfully");
-
-        return ResponseEntity.ok(response);
-    }
-
     @PostMapping
     @Operation(summary = "Buat data Skala Dampak baru")
     public ResponseEntity<ApiResponse<SkalaDampakDTO>> createData(@Valid @RequestBody SkalaDampakDTO skalaDampakRequestDto) {
