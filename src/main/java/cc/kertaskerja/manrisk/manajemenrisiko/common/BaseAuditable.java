@@ -14,12 +14,19 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public abstract class BaseAuditable {
-
     @CreatedDate
     @Column(name = "created_date", updatable = false)
-    private LocalDateTime createdDate;
+    protected LocalDateTime createdDate;
 
     @LastModifiedDate
     @Column(name = "updated_date")
-    private LocalDateTime updatedDate;
+    protected LocalDateTime updatedDate;
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public LocalDateTime getUpdatedDate() {
+        return updatedDate;
+    }
 }

@@ -1,5 +1,9 @@
 package cc.kertaskerja.manrisk.manajemenrisiko.service.skalakemungkinan;
 
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaDampak.SkalaDampakUpdatedDTO;
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaKemungkinan.SkalaKemungkinanCreateDTO;
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaKemungkinan.SkalaKemungkinanSimpleDTO;
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaKemungkinan.SkalaKemungkinanUpdateDTO;
 import cc.kertaskerja.manrisk.manajemenrisiko.entity.SkalaKemungkinan;
 import cc.kertaskerja.manrisk.manajemenrisiko.repository.SkalaKemungkinanRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -15,57 +19,75 @@ public class SkalaKemungkinanServiceImpl implements SkalaKemungkinanService {
 
     private final SkalaKemungkinanRepository skalaKemungkinanRepository;
 
-    @Override
-    public List<SkalaKemungkinan> findAll() {
-        return skalaKemungkinanRepository.findAll();
+    private SkalaKemungkinanSimpleDTO toSimpleDTO(SkalaKemungkinan skalaKemungkinan) {
+        return new SkalaKemungkinanSimpleDTO(
+                skalaKemungkinan.getId(),
+                skalaKemungkinan.getSkalaKemungkinan(),
+                skalaKemungkinan.getKeteranganKemungkinan()
+        );
+    }
+
+    private SkalaKemungkinanCreateDTO toCreateDTO(SkalaKemungkinan skalaKemungkinan) {
+        return new SkalaKemungkinanCreateDTO(
+                skalaKemungkinan.getId(),
+                skalaKemungkinan.getSkalaKemungkinan(),
+                skalaKemungkinan.getKeteranganKemungkinan(),
+                skalaKemungkinan.getCreatedDate()
+        );
+    }
+
+    private SkalaKemungkinanUpdateDTO toUpdateDTO(SkalaKemungkinan skalaKemungkinan) {
+        return new SkalaKemungkinanUpdateDTO(
+                skalaKemungkinan.getId(),
+                skalaKemungkinan.getSkalaKemungkinan(),
+                skalaKemungkinan.getKeteranganKemungkinan(),
+                skalaKemungkinan.getUpdatedDate()
+        );
     }
 
     @Override
-    public SkalaKemungkinan findById(Long id) {
-        Optional<SkalaKemungkinan> result = skalaKemungkinanRepository.findById(id);
-
-        if (result.isPresent()) {
-            return result.get();
-        } else {
-            throw new RuntimeException("Skala Kemungkinan with ID " + id + " not found");
-        }
+    public List<SkalaKemungkinanSimpleDTO> findAll() {
+        return skalaKemungkinanRepository.findAll().stream()
+                .map(this::toSimpleDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public SkalaKemungkinan save(SkalaKemungkinan skalaKemungkinan) {
-        return skalaKemungkinanRepository.save(skalaKemungkinan);
+    public SkalaKemungkinanSimpleDTO findById(Long id) {
+        SkalaKemungkinan skalaKemungkinan = skalaKemungkinanRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Skala Kemungkinan with ID " + id + " not found"));
+        return toSimpleDTO(skalaKemungkinan);
     }
 
     @Override
     @Transactional
-    public SkalaKemungkinan update(Long id, SkalaKemungkinan skalaKemungkinan) {
-        Optional<SkalaKemungkinan> existingSkalaKemungkinanOpt = skalaKemungkinanRepository.findById(id);
+    public SkalaKemungkinanCreateDTO save(SkalaKemungkinan skalaKemungkinan) {
+        SkalaKemungkinan saved = skalaKemungkinanRepository.save(skalaKemungkinan);
+        return toCreateDTO(saved);
+    }
 
-        if (existingSkalaKemungkinanOpt.isEmpty()) {
-            throw new RuntimeException("Skala Kemungkinan with ID " + id + " not found");
+    @Override
+    @Transactional
+    public SkalaKemungkinanUpdateDTO update(Long id, SkalaKemungkinan skalaKemungkinanRequest) {
+        SkalaKemungkinan existingSkalaKemungkinan = skalaKemungkinanRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Skala Kemungkinan with ID " + id + " not found"));
+
+        if (skalaKemungkinanRequest.getSkalaKemungkinan() != null) {
+            existingSkalaKemungkinan.setSkalaKemungkinan(skalaKemungkinanRequest.getSkalaKemungkinan());
+        }
+        if (skalaKemungkinanRequest.getKeteranganKemungkinan() != null) {
+            existingSkalaKemungkinan.setKeteranganKemungkinan(skalaKemungkinanRequest.getKeteranganKemungkinan());
         }
 
-        SkalaKemungkinan existingSkalaKemungkinan = existingSkalaKemungkinanOpt.get();
-
-        if (skalaKemungkinan.getSkalaKemungkinan() != null) {
-            existingSkalaKemungkinan.setSkalaKemungkinan(skalaKemungkinan.getSkalaKemungkinan());
-        }
-        if (skalaKemungkinan.getKeteranganKemungkinan() != null) {
-            existingSkalaKemungkinan.setKeteranganKemungkinan(skalaKemungkinan.getKeteranganKemungkinan());
-        }
-
-        return skalaKemungkinanRepository.save(existingSkalaKemungkinan);
+        SkalaKemungkinan updated = skalaKemungkinanRepository.save(existingSkalaKemungkinan);
+        return toUpdateDTO(updated);
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
-        Optional<SkalaKemungkinan> skalaKemungkinanOpt = skalaKemungkinanRepository.findById(id);
-
-        if (skalaKemungkinanOpt.isEmpty()) {
-            throw new RuntimeException("Skala Kemungkinan with ID " + id + " not found");
-        }
-
-        skalaKemungkinanRepository.delete(skalaKemungkinanOpt.get());
+        SkalaKemungkinan skalaKemungkinan = skalaKemungkinanRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Skala Kemungkinan with ID " + id + " not found"));
+        skalaKemungkinanRepository.delete(skalaKemungkinan);
     }
 }

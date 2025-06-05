@@ -1,18 +1,20 @@
 package cc.kertaskerja.manrisk.manajemenrisiko.service.skaladampak;
 
-import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaDampakDTO;
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaDampak.SkalaDampakCreatedDTO;
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaDampak.SkalaDampakSimpleDTO;
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaDampak.SkalaDampakUpdatedDTO;
 import cc.kertaskerja.manrisk.manajemenrisiko.entity.SkalaDampak;
 
 import java.util.List;
 
 public interface SkalaDampakService {
-    List<SkalaDampakDTO> findAll();
+    List<SkalaDampakSimpleDTO> findAll();
 
-    SkalaDampakDTO findById(Long id);
+    SkalaDampakSimpleDTO findById(Long id);
 
-    SkalaDampakDTO save(SkalaDampak skalaDampak);
+    SkalaDampakCreatedDTO save(SkalaDampak skalaDampak);
 
-    SkalaDampakDTO update(Long id, SkalaDampak skalaDampak);
+    SkalaDampakUpdatedDTO update(Long id, SkalaDampak skalaDampak);
 
     void deleteById(Long id);
 }

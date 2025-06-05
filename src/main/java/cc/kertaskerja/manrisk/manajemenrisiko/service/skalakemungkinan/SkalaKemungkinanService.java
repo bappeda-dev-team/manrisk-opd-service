@@ -1,19 +1,21 @@
 package cc.kertaskerja.manrisk.manajemenrisiko.service.skalakemungkinan;
 
-import cc.kertaskerja.manrisk.manajemenrisiko.entity.SkalaDampak;
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaDampak.SkalaDampakUpdatedDTO;
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaKemungkinan.SkalaKemungkinanCreateDTO;
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaKemungkinan.SkalaKemungkinanSimpleDTO;
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaKemungkinan.SkalaKemungkinanUpdateDTO;
 import cc.kertaskerja.manrisk.manajemenrisiko.entity.SkalaKemungkinan;
 
 import java.util.List;
 
 public interface SkalaKemungkinanService {
+    List<SkalaKemungkinanSimpleDTO> findAll();
 
-    List<SkalaKemungkinan> findAll();
+    SkalaKemungkinanSimpleDTO findById(Long id);
 
-    SkalaKemungkinan findById(Long id);
+    SkalaKemungkinanCreateDTO save(SkalaKemungkinan skalaKemungkinan);
 
-    SkalaKemungkinan save(SkalaKemungkinan skalaKemungkinan);
-
-    SkalaKemungkinan update(Long id, SkalaKemungkinan skalaKemungkinan);
+    SkalaKemungkinanUpdateDTO update(Long id, SkalaKemungkinan skalaKemungkinan);
 
     void deleteById(Long id);
 }
