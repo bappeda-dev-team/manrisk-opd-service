@@ -1,22 +1,20 @@
 package cc.kertaskerja.manrisk.manajemenrisiko.service.skaladampak;
 
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaDampakDTO;
 import cc.kertaskerja.manrisk.manajemenrisiko.entity.SkalaDampak;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface SkalaDampakService {
+    List<SkalaDampakDTO> findAll();
 
-    List<SkalaDampak> findAll();
+    SkalaDampakDTO findById(Long id);
 
-    SkalaDampak findById(Long id);
+    SkalaDampakDTO findBySkalaDampak(String skalaDampak);
 
-    SkalaDampak findBySkalaDampak(String skalaDampak);
+    SkalaDampakDTO save(SkalaDampak skalaDampak);
 
-    SkalaDampak save(SkalaDampak skalaDampak);
-
-    SkalaDampak update(Long id, SkalaDampak skalaDampak);
+    SkalaDampakDTO update(Long id, SkalaDampak skalaDampak);
 
     void deleteById(Long id);
 }

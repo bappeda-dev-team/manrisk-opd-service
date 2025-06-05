@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS skala_dampak;
 
 CREATE TABLE skala_dampak (
     id BIGSERIAL PRIMARY KEY,
-    skala_dampak VARCHAR(50),
+    skala_dampak INTEGER,
     keterangan_dampak TEXT,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_date TIMESTAMP

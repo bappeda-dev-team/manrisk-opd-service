@@ -4,7 +4,8 @@ INSERT INTO rekin (
     id_rekin, nip_asn, kode_opd, tahun,
     penyebab_permasalahan, permasalahan, pernyataan_risiko,
     skala_kemungkinan, dampak, skala_dampak,
-    pihak_yang_terkena, keterangan, status, status_manrisk, version
+    pihak_yang_terkena, keterangan, status, status_manrisk, version,
+    created_date, updated_date
 ) VALUES
 -- Record 1: Bappeda - Risk Management Documentation
 (
@@ -22,7 +23,9 @@ INSERT INTO rekin (
     'Perlu dilakukan pengendalian dengan penambahan SDM dan perbaikan koordinasi',
     'UNCHECKED',
     'MenungguVerifikasiAtasan',
-    1
+    1,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
 ),
 
 -- Record 2: DINAS KESEHATAN - Medical Equipment Risk
@@ -41,7 +44,9 @@ INSERT INTO rekin (
     'Diperlukan peningkatan anggaran pemeliharaan dan pelatihan teknisi',
     'UNCHECKED',
     'MenungguVerifikasiAtasan',
-    1
+    1,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
 ),
 
 -- Record 3: DINAS PENDIDIKAN - Educational Infrastructure
@@ -60,7 +65,9 @@ INSERT INTO rekin (
     'Perlu segera dilakukan rehabilitasi dan perawatan rutin infrastruktur sekolah',
     'UNCHECKED',
     'MenungguVerifikasiAtasan',
-    1
+    1,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
 ),
 
 -- Record 4: DINAS PEKERJAAN UMUM - Road Infrastructure
@@ -79,7 +86,9 @@ INSERT INTO rekin (
     'Diperlukan perbaikan sistem drainase dan pemeliharaan jalan secara berkala',
     'UNCHECKED',
     'MenungguVerifikasiAtasan',
-    1
+    1,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
 ),
 
 -- Record 5: DINAS SOSIAL - Social Aid Distribution
@@ -98,5 +107,7 @@ INSERT INTO rekin (
     'Perlu pengembangan sistem database terintegrasi dan perbaikan mekanisme verifikasi',
     'UNCHECKED',
     'MenungguVerifikasiAtasan',
-    1
+    1,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
 );

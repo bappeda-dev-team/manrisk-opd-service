@@ -1,5 +1,6 @@
 package cc.kertaskerja.manrisk.manajemenrisiko.controller;
 
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaDampakDTO;
 import cc.kertaskerja.manrisk.manajemenrisiko.dto.ApiResponse;
 import cc.kertaskerja.manrisk.manajemenrisiko.entity.SkalaDampak;
 import cc.kertaskerja.manrisk.manajemenrisiko.service.skaladampak.SkalaDampakService;
@@ -24,9 +25,9 @@ public class SkalaDampakController {
 
     @GetMapping
     @Operation(summary = "Ambil semua data Skala Dampak")
-    public ResponseEntity<ApiResponse<List<SkalaDampak>>> getAllData() {
-        List<SkalaDampak> skalaDampakList = skalaDampakService.findAll();
-        ApiResponse<List<SkalaDampak>> response = ApiResponse.success(skalaDampakList,
+    public ResponseEntity<ApiResponse<List<SkalaDampakDTO>>> getAllData() {
+        List<SkalaDampakDTO> skalaDampakList = skalaDampakService.findAll();
+        ApiResponse<List<SkalaDampakDTO>> response = ApiResponse.success(skalaDampakList,
                 "Retrieved " + skalaDampakList.size() + " data successfully");
 
         return ResponseEntity.ok(response);
@@ -34,10 +35,10 @@ public class SkalaDampakController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Ambil data Skala Dampak berdasarkan ID")
-    public ResponseEntity<ApiResponse<SkalaDampak>> getDataById(@PathVariable Long id) {
-        SkalaDampak skalaDampak = skalaDampakService.findById(id);
+    public ResponseEntity<ApiResponse<SkalaDampakDTO>> getDataById(@PathVariable Long id) {
+        SkalaDampakDTO skalaDampak = skalaDampakService.findById(id);
 
-        ApiResponse<SkalaDampak> response = ApiResponse.success(skalaDampak,
+        ApiResponse<SkalaDampakDTO> response = ApiResponse.success(skalaDampak,
                 "Retrieved Skala Dampak with ID " + id + " successfully");
 
         return ResponseEntity.ok(response);
@@ -45,10 +46,10 @@ public class SkalaDampakController {
 
     @GetMapping("/by-skala/{skalaDampak}")
     @Operation(summary = "Ambil data Skala Dampak berdasarkan nilai skala dampak")
-    public ResponseEntity<ApiResponse<SkalaDampak>> getDataBySkalaDampak(@PathVariable String skalaDampak) {
-        SkalaDampak result = skalaDampakService.findBySkalaDampak(skalaDampak);
+    public ResponseEntity<ApiResponse<SkalaDampakDTO>> getDataBySkalaDampak(@PathVariable String skalaDampak) {
+        SkalaDampakDTO result = skalaDampakService.findBySkalaDampak(skalaDampak);
 
-        ApiResponse<SkalaDampak> response = ApiResponse.success(result,
+        ApiResponse<SkalaDampakDTO> response = ApiResponse.success(result,
                 "Retrieved Skala Dampak with value " + skalaDampak + " successfully");
 
         return ResponseEntity.ok(response);
@@ -56,21 +57,30 @@ public class SkalaDampakController {
 
     @PostMapping
     @Operation(summary = "Buat data Skala Dampak baru")
-    public ResponseEntity<ApiResponse<SkalaDampak>> createData(@Valid @RequestBody SkalaDampak skalaDampakRequest) {
-        SkalaDampak skalaDampak = skalaDampakService.save(skalaDampakRequest);
+    public ResponseEntity<ApiResponse<SkalaDampakDTO>> createData(@Valid @RequestBody SkalaDampakDTO skalaDampakRequestDto) {
+        // Convert DTO to Entity before saving
+        SkalaDampak skalaDampak = new SkalaDampak();
+        skalaDampak.setSkalaDampak(skalaDampakRequestDto.getSkalaDampak());
+        skalaDampak.setKeteranganDampak(skalaDampakRequestDto.getKeteranganDampak());
 
-        ApiResponse<SkalaDampak> response = ApiResponse.created(skalaDampak);
+        SkalaDampakDTO savedDto = skalaDampakService.save(skalaDampak);
+
+        ApiResponse<SkalaDampakDTO> response = ApiResponse.created(savedDto);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update data Skala Dampak berdasarkan ID")
-    public ResponseEntity<ApiResponse<SkalaDampak>> updateData(@PathVariable Long id,
-                                                      @RequestBody SkalaDampak skalaDampakRequest) {
-        SkalaDampak updatedSkalaDampak = skalaDampakService.update(id, skalaDampakRequest);
+    public ResponseEntity<ApiResponse<SkalaDampakDTO>> updateData(@PathVariable Long id,
+                                                                  @RequestBody SkalaDampakDTO skalaDampakRequestDto) {
+        SkalaDampak skalaDampak = new SkalaDampak();
+        skalaDampak.setSkalaDampak(skalaDampakRequestDto.getSkalaDampak());
+        skalaDampak.setKeteranganDampak(skalaDampakRequestDto.getKeteranganDampak());
 
-        ApiResponse<SkalaDampak> response = ApiResponse.updated(updatedSkalaDampak);
+        SkalaDampakDTO updatedDto = skalaDampakService.update(id, skalaDampak);
+
+        ApiResponse<SkalaDampakDTO> response = ApiResponse.updated(updatedDto);
 
         return ResponseEntity.ok(response);
     }

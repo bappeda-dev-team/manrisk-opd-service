@@ -22,8 +22,8 @@ public class SkalaKemungkinan extends BaseAuditable {
     private Long id;
 
     @NotNull(message = "Skala kemungkinan wajib diisi!")
-    @Column(name = "skala_kemungkinan", nullable = false, length = 50)
-    private String skalaKemungkinan;
+    @Column(name = "skala_kemungkinan", nullable = false)
+    private Integer skalaKemungkinan;
 
     @NotNull(message = "Keterangan kemungkinan wajib diisi!")
     @Column(name = "keterangan_kemungkinan", columnDefinition = "TEXT")

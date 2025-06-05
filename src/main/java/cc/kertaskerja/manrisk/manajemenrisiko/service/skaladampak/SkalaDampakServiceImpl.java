@@ -1,15 +1,16 @@
 package cc.kertaskerja.manrisk.manajemenrisiko.service.skaladampak;
 
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.SkalaDampakDTO;
 import cc.kertaskerja.manrisk.manajemenrisiko.entity.SkalaDampak;
 import cc.kertaskerja.manrisk.manajemenrisiko.exception.ResourceNotFoundException;
 import cc.kertaskerja.manrisk.manajemenrisiko.repository.SkalaDampakRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,49 +18,47 @@ public class SkalaDampakServiceImpl implements SkalaDampakService {
 
     private final SkalaDampakRepository skalaDampakRepository;
 
-    @Override
-    public List<SkalaDampak> findAll() {
-        return skalaDampakRepository.findAll();
+    private SkalaDampakDTO toDTO(SkalaDampak skalaDampak) {
+        return new SkalaDampakDTO(
+                skalaDampak.getId(),
+                skalaDampak.getSkalaDampak(),
+                skalaDampak.getKeteranganDampak()
+        );
     }
 
     @Override
-    public SkalaDampak findById(Long id) {
-        Optional<SkalaDampak> result = skalaDampakRepository.findById(id);
-
-        if (result.isPresent()) {
-            return result.get();
-        } else {
-            throw new ResourceNotFoundException("Skala Dampak with ID " + id + " not found");
-        }
+    public List<SkalaDampakDTO> findAll() {
+        return skalaDampakRepository.findAll().stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public SkalaDampak findBySkalaDampak(String skalaDampak) {
-        Optional<SkalaDampak> result = skalaDampakRepository.findBySkalaDampak(skalaDampak);
-
-        if (result.isPresent()) {
-            return result.get();
-        } else {
-            throw new ResourceNotFoundException("Skala Dampak with value " + skalaDampak + " not found");
-        }
+    public SkalaDampakDTO findById(Long id) {
+        SkalaDampak skalaDampak = skalaDampakRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Skala Dampak with ID " + id + " not found"));
+        return toDTO(skalaDampak);
     }
 
     @Override
-    @Transactional
-    public SkalaDampak save(SkalaDampak skalaDampak) {
-        return skalaDampakRepository.save(skalaDampak);
+    public SkalaDampakDTO findBySkalaDampak(String skalaDampak) {
+        SkalaDampak result = skalaDampakRepository.findBySkalaDampak(skalaDampak)
+                .orElseThrow(() -> new ResourceNotFoundException("Skala Dampak with value " + skalaDampak + " not found"));
+        return toDTO(result);
     }
 
     @Override
     @Transactional
-    public SkalaDampak update(Long id, SkalaDampak skalaDampakRequest) {
-        Optional<SkalaDampak> existingSkalaDampakOpt = skalaDampakRepository.findById(id);
+    public SkalaDampakDTO save(SkalaDampak skalaDampak) {
+        SkalaDampak saved = skalaDampakRepository.save(skalaDampak);
+        return toDTO(saved);
+    }
 
-        if (existingSkalaDampakOpt.isEmpty()) {
-            throw new ResourceNotFoundException("Skala Dampak with ID " + id + " not found");
-        }
-
-        SkalaDampak existingSkalaDampak = existingSkalaDampakOpt.get();
+    @Override
+    @Transactional
+    public SkalaDampakDTO update(Long id, SkalaDampak skalaDampakRequest) {
+        SkalaDampak existingSkalaDampak = skalaDampakRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Skala Dampak with ID " + id + " not found"));
 
         if (skalaDampakRequest.getSkalaDampak() != null) {
             existingSkalaDampak.setSkalaDampak(skalaDampakRequest.getSkalaDampak());
@@ -68,18 +67,15 @@ public class SkalaDampakServiceImpl implements SkalaDampakService {
             existingSkalaDampak.setKeteranganDampak(skalaDampakRequest.getKeteranganDampak());
         }
 
-        return skalaDampakRepository.save(existingSkalaDampak);
+        SkalaDampak updated = skalaDampakRepository.save(existingSkalaDampak);
+        return toDTO(updated);
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
-        Optional<SkalaDampak> skalaDampakOpt = skalaDampakRepository.findById(id);
-
-        if (skalaDampakOpt.isEmpty()) {
-            throw new ResourceNotFoundException("Skala Dampak with ID " + id + " not found");
-        }
-
-        skalaDampakRepository.delete(skalaDampakOpt.get());
+        SkalaDampak skalaDampak = skalaDampakRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Skala Dampak with ID " + id + " not found"));
+        skalaDampakRepository.delete(skalaDampak);
     }
 }

@@ -23,9 +23,8 @@ public class SkalaDampak extends BaseAuditable {
     private Long id;
 
     @NotNull(message = "Skala dampak wajib diisi!")
-    @Size(max = 50, message = "Skala dampak tidak boleh lebih dari 50 karakter!")
-    @Column(name = "skala_dampak", nullable = false, length = 50)
-    private String skalaDampak;
+    @Column(name = "skala_dampak", nullable = false)
+    private Integer skalaDampak;
 
     @NotNull(message = "Keterangan dampak wajib diisi!")
     @Column(name = "keterangan_dampak", columnDefinition = "TEXT")
