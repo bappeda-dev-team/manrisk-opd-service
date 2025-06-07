@@ -28,9 +28,6 @@ public class ApiResponse<T> {
     }
 
     // Static factory methods for success responses
-    public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(true, 200, "Success", data);
-    }
 
     public static <T> ApiResponse<T> success(T data, String message) {
         return new ApiResponse<>(true, 200, message, data);

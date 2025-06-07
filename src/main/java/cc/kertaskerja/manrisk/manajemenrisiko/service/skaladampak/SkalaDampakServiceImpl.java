@@ -56,6 +56,7 @@ public class SkalaDampakServiceImpl implements SkalaDampakService {
     public SkalaDampakSimpleDTO findById(Long id) {
         SkalaDampak skalaDampak = skalaDampakRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Skala Dampak with ID " + id + " not found"));
+
         return toSimpleDTO(skalaDampak);
     }
 
@@ -63,6 +64,7 @@ public class SkalaDampakServiceImpl implements SkalaDampakService {
     @Transactional
     public SkalaDampakCreatedDTO save(SkalaDampak skalaDampak) {
         SkalaDampak saved = skalaDampakRepository.save(skalaDampak);
+
         return toCreatedDTO(saved);
     }
 

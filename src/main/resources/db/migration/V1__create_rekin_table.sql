@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS rekin;
 CREATE TABLE rekin (
                        id BIGSERIAL PRIMARY KEY,
                        id_rekin VARCHAR(50) NOT NULL,
-                       nip_asn VARCHAR(20) NOT NULL,
+                       nip VARCHAR(20) NOT NULL,
                        kode_opd VARCHAR(50) NOT NULL,
                        tahun VARCHAR(4) NOT NULL,
                        penyebab_permasalahan TEXT,
@@ -23,6 +23,6 @@ CREATE TABLE rekin (
 
 -- Create indexes for better performance
 CREATE INDEX idx_rekin_kode_opd_tahun ON rekin(kode_opd, tahun);
-CREATE INDEX idx_rekin_nip_asn ON rekin(nip_asn);
+CREATE INDEX idx_rekin_nip ON rekin(nip);
 CREATE INDEX idx_rekin_id_rekin ON rekin(id_rekin);
 CREATE INDEX idx_rekin_status ON rekin(status);

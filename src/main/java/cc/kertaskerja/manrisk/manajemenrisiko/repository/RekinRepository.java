@@ -19,12 +19,12 @@ public interface RekinRepository extends JpaRepository<Rekin, Long> {
                                    @Param("tahun") String tahun,
                                    @Param("idRekin") String idRekin);
 
-     @Query("SELECT r FROM Rekin r WHERE r.kodeOpd = :kodeOpd AND r.tahun = :tahun AND r.nipAsn = :nip")
+     @Query("SELECT r FROM Rekin r WHERE r.kodeOpd = :kodeOpd AND r.tahun = :tahun AND r.nip = :nip")
      List<Rekin> findByNip(@Param("kodeOpd") String kodeOpd,
                            @Param("tahun") String tahun,
                            @Param("nip") String nip);
 
-     @Query("SELECT r FROM Rekin r WHERE r.kodeOpd = :kodeOpd AND r.tahun = :tahun AND r.nipAsn = :nip AND r.idRekin = :idRekin")
+     @Query("SELECT r FROM Rekin r WHERE r.kodeOpd = :kodeOpd AND r.tahun = :tahun AND r.nip = :nip AND r.idRekin = :idRekin")
      Optional<Rekin> findRekinForUpdate(@Param("kodeOpd") String kodeOpd,
                                         @Param("tahun") String tahun,
                                         @Param("nip") String nip,

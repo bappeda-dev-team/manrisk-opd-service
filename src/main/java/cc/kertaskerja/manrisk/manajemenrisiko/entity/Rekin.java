@@ -28,10 +28,10 @@ public class Rekin extends BaseAuditable {
     @Column(name = "id_rekin", nullable = false, length = 50)
     private String idRekin;
 
-    @NotNull(message = "NIP ASN wajib diisi!")
-    @Size(max = 20, message = "NIP ASN tidak boleh lebih dari 20 karakter!")
-    @Column(name = "nip_asn", nullable = false, length = 20)
-    private String nipAsn;
+    @NotNull(message = "NIP wajib diisi!")
+    @Size(max = 20, message = "NIP tidak boleh lebih dari 20 karakter!")
+    @Column(name = "nip", nullable = false, length = 20)
+    private String nip;
 
     @NotNull(message = "Kode OPD wajib diisi!")
     @Size(max = 50, message = "Kode OPD tidak boleh lebih dari 50 karakter!")

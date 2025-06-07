@@ -1,7 +1,7 @@
 
 -- Insert sample data for rekin table
 INSERT INTO rekin (
-    id_rekin, nip_asn, kode_opd, tahun,
+    id_rekin, nip, kode_opd, tahun,
     penyebab_permasalahan, permasalahan, pernyataan_risiko,
     skala_kemungkinan, dampak, skala_dampak,
     pihak_yang_terkena, keterangan, status, status_manrisk, version,
