@@ -83,7 +83,7 @@ public class RekinServiceImpl implements RekinService {
     @Override
     @Transactional
     public RekinDTO update(String kodeOpd, String tahun, String nip, String idRekin, RekinDTO rekinRequest) {
-        Rekin existingRekin = rekinRepository.findByIdRekin(kodeOpd, tahun, idRekin)
+        Rekin existingRekin = rekinRepository.findRekinForUpdate(kodeOpd, tahun, nip, idRekin)
                 .orElseThrow(() -> new ResourceNotFoundException("Rekin with ID " + idRekin + " not found for NIP " + nip));
 
         if (existingRekin.getPenyebabPermasalahan() != null) {
