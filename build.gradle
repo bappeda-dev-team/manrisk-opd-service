@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.flywaydb.flyway' version '9.22.3'
 }
 
 group = 'cc.kertaskerja.manrisk'
@@ -21,11 +22,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
     implementation 'io.github.cdimascio:dotenv-java:3.0.0'
-    
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-database-postgresql'
+    compileOnly("org.projectlombok:lombok:1.18.38")
+    annotationProcessor("org.projectlombok:lombok:1.18.38")
+
+    testCompileOnly("org.projectlombok:lombok:1.18.38")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
     runtimeOnly 'org.postgresql:postgresql'
-    
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }
@@ -34,28 +39,31 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-// Ensure the JAR is executable
 jar {
     enabled = false
 }
 
-bootBuildImage {
-    imageName = "${project.name}"
-    environment = ["BP_JVM_VERSION" : "21.*"]
-
-    if (System.getProperty( "os.arch" ).toLowerCase().startsWith('aarch')) {
-        builder = "paketobuildpacks/builder-jammy-buildpackless-tiny"
-        buildpacks = [ "docker.io/paketobuildpacks/java" ]
-    } else {
-        builder = "docker.io/paketobuildpacks/builder-jammy-tiny"
-    }
-
-
-    docker {
-        publishRegistry {
-            username = project.findProperty("registryUsername")
-            password = project.findProperty("registryToken")
-            url = project.findProperty("registryUrl")
+def loadEnvFile() {
+    def envFile = file('.env')
+    if (envFile.exists()) {
+        envFile.readLines().each { line ->
+            if (line && !line.startsWith('#') && line.contains('=')) {
+                def (key, value) = line.split('=', 2)
+                if (!project.hasProperty(key)) {
+                    project.ext[key] = value
+                }
+            }
         }
     }
+}
+
+loadEnvFile()
+
+flyway {
+    url = project.findProperty('DB_URL') ?: 'jdbc:postgresql://localhost:5432/manajemen_risiko'
+    user = project.findProperty('DB_USERNAME') ?: 'majapahit'
+    password = project.findProperty('DB_PASSWORD') ?: 'Madiun@123'
+    locations = ['classpath:db/migration']
+    baselineOnMigrate = true
+    validateOnMigrate = true
 }

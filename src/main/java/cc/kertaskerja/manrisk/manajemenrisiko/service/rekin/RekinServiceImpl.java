@@ -1,55 +1,141 @@
 package cc.kertaskerja.manrisk.manajemenrisiko.service.rekin;
 
+import cc.kertaskerja.manrisk.manajemenrisiko.dto.Rekin.RekinDTO;
 import cc.kertaskerja.manrisk.manajemenrisiko.entity.Rekin;
 import cc.kertaskerja.manrisk.manajemenrisiko.exception.ResourceNotFoundException;
 import cc.kertaskerja.manrisk.manajemenrisiko.repository.RekinRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class RekinServiceImpl implements RekinService {
 
-    private RekinRepository rekinRepository;
+    private final RekinRepository rekinRepository;
 
-    @Autowired
-    public RekinServiceImpl(RekinRepository theRekinRepository) {
-        rekinRepository = theRekinRepository;
+    private RekinDTO toDTO(Rekin rekin) {
+        return new RekinDTO(
+                rekin.getId(),
+                rekin.getIdRekin(),
+                rekin.getNip(),
+                rekin.getKodeOpd(),
+                rekin.getTahun(),
+                rekin.getPenyebabPermasalahan(),
+                rekin.getPermasalahan(),
+                rekin.getPernyataanRisiko(),
+                rekin.getSkalaKemungkinan(),
+                rekin.getDampak(),
+                rekin.getSkalaDampak(),
+                rekin.getPihakYangTerkena(),
+                rekin.getKeterangan(),
+                rekin.getStatus(),
+                rekin.getStatusManrisk(),
+                rekin.getVersion(),
+                rekin.getCreatedDate(),
+                rekin.getUpdatedDate()
+        );
+    }
+
+
+    @Override
+    public List<RekinDTO> findAll(String kodeOpd, String tahun) {
+        return rekinRepository.findAll(kodeOpd, tahun).stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Rekin> findAll(String kodeOpd, String tahun) {
-        return rekinRepository.findAll(kodeOpd, tahun);
+    public RekinDTO findByIdRekin(String kodeOpd, String tahun, String idRekin) {
+        Rekin rekin = rekinRepository.findByIdRekin(kodeOpd, tahun, idRekin)
+                .orElseThrow(() -> new ResourceNotFoundException("Rekin with ID " + idRekin + " not found"));
+
+        return toDTO(rekin);
     }
 
     @Override
-    public Rekin findByIdRekin(String kodeOpd, String tahun, String idRekin) {
-        Optional<Rekin> result = rekinRepository.findByIdRekin(kodeOpd, tahun, idRekin);
-
-        if (result.isPresent()) {
-            return result.get();
-        } else {
-            throw new ResourceNotFoundException("Data is not found");
-        }
-    }
-
-    @Override
-    public List<Rekin> findByNip(String kodeOpd, String tahun, String nip) {
-        List<Rekin> result = rekinRepository.findByNip(kodeOpd, tahun, nip);
-
-        if (result.isEmpty()) {
-            throw new ResourceNotFoundException("Data is not found");
-        } else {
-            return result;
-        }
+    public List<RekinDTO> findByNip(String kodeOpd, String tahun, String nip) {
+        return rekinRepository.findByNip(kodeOpd, tahun, nip).stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public void save(Rekin rekin) {
-        rekinRepository.save(rekin);
+    public RekinDTO save(Rekin rekin) {
+        if (rekin.getStatus() == null) {
+            rekin.setStatus("UNCHECKED");
+        }
+        if (rekin.getStatusManrisk() == null) {
+            rekin.setStatusManrisk("MenungguVerifikasiAtasan");
+        }
+
+        Rekin saved = rekinRepository.save(rekin);
+
+        return toDTO(saved);
+    }
+
+    @Override
+    @Transactional
+    public RekinDTO update(String kodeOpd, String tahun, String nip, String idRekin, RekinDTO rekinRequest) {
+        Rekin existingRekin = rekinRepository.findRekinForUpdate(kodeOpd, tahun, nip, idRekin)
+                .orElseThrow(() -> new ResourceNotFoundException("Rekin with ID " + idRekin + " not found for NIP " + nip));
+
+        if (existingRekin.getPenyebabPermasalahan() != null) {
+            existingRekin.setPenyebabPermasalahan(existingRekin.getPenyebabPermasalahan());
+        }
+        if (existingRekin.getPermasalahan() != null) {
+            existingRekin.setPermasalahan(existingRekin.getPermasalahan());
+        }
+        if (existingRekin.getPernyataanRisiko() != null) {
+            existingRekin.setPernyataanRisiko(existingRekin.getPernyataanRisiko());
+        }
+        if (existingRekin.getSkalaKemungkinan() != null) {
+            existingRekin.setSkalaKemungkinan(existingRekin.getSkalaKemungkinan());
+        }
+        if (existingRekin.getDampak() != null) {
+            existingRekin.setDampak(existingRekin.getDampak());
+        }
+        if (existingRekin.getSkalaDampak() != null) {
+            existingRekin.setSkalaDampak(existingRekin.getSkalaDampak());
+        }
+        if (existingRekin.getPihakYangTerkena() != null) {
+            existingRekin.setPihakYangTerkena(existingRekin.getPihakYangTerkena());
+        }
+        if (existingRekin.getKeterangan() != null) {
+            existingRekin.setKeterangan(existingRekin.getKeterangan());
+        }
+        if (existingRekin.getVersion() != null) {
+            existingRekin.setVersion(existingRekin.getVersion());
+        }
+        if (existingRekin.getNip() != null) {
+            existingRekin.setNip(existingRekin.getNip());
+        }
+        if (existingRekin.getKodeOpd() != null) {
+            existingRekin.setKodeOpd(existingRekin.getKodeOpd());
+        }
+        if (existingRekin.getTahun() != null) {
+            existingRekin.setTahun(existingRekin.getTahun());
+        }
+        if (existingRekin.getIdRekin() != null) {
+            existingRekin.setIdRekin(existingRekin.getIdRekin());
+        }
+
+        Rekin updated = rekinRepository.save(existingRekin);
+
+        return toDTO(updated);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByIdRekin(String kodeOpd, String tahnun, String idRekin) {
+        Rekin rekin = rekinRepository.findByIdRekin(kodeOpd, tahnun, idRekin)
+                .orElseThrow(() -> new ResourceNotFoundException("Rekin with ID " + idRekin + " not found"));
+        rekinRepository.delete(rekin);
     }
 }
